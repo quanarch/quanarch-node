@@ -8,7 +8,7 @@ qu new project shop --lang node-ts --dir . --qua shop-qua --quanar shop-quanar -
 qu new examples shop --lang node-ts --example advanced --dir .
 ```
 
-Needs qu 0.3.3 or later and Node.js 24 or later.
+Needs qu 0.3.4 or later and Node.js 24 or later.
 
 ## How Quanarch works in Node.js
 
