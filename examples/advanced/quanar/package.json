@@ -1,0 +1,22 @@
+{
+  "name": "shop-quanar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The shop's quanar: one server process. It opens the apis, creates the tables, checks permissions and validations and carries events for the quans it loads.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && esbuild src/index.ts --bundle --platform=node --format=cjs --target=node24 --packages=external --outfile=dist/index.cjs && esbuild src/quan-host/index.ts --bundle --platform=node --format=cjs --target=node24 --outfile=dist/quan-host.cjs",
+    "start": "node dist/index.cjs",
+    "dev": "npm run build && npm start",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "shop-qua": "file:../packages/shop-qua"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}

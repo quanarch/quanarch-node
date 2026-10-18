@@ -57,3 +57,10 @@ jobs:
           (cd quans/billing && npm run watch) & sleep 4
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST localhost:3000/billing -H 'Content-Type: application/json' -d '{"text":"hi"}')" = 201
           curl -sf localhost:3000/billing | grep -q '"text":"hi"'
+      - name: Create the advanced example with qu, build and type-check every part
+        working-directory: ${{ runner.temp }}
+        env:
+          QU_STACK_DIR: ${{ github.workspace }}
+        run: |
+          ./qu new examples shop --lang node-ts --example advanced --dir .
+          cd shop && npm run build && npm run typecheck
