@@ -1,0 +1,22 @@
+import type { QuanarCore } from '../types/index.js';
+
+let core: QuanarCore | null = null;
+
+/** The quanar plugs its core in here, once, before any quan runs. */
+export function init(quanarCore: QuanarCore): void {
+  if (core) throw new Error('shop-qua is already initialized');
+  core = quanarCore;
+}
+
+export function reset(): void {
+  core = null;
+}
+
+export function isInitialized(): boolean {
+  return core !== null;
+}
+
+export function getQuanarCore(): QuanarCore {
+  if (!core) throw new Error('shop-qua is not initialized: the quanar must call init() first.');
+  return core;
+}

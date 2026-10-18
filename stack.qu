@@ -25,6 +25,11 @@ template qmock templates/quanar {
 	start npm run dev
 }
 
+example advanced examples/advanced {
+	run npm run setup
+	start npm start
+}
+
 # A quan added to the project later is listed in every quanar and qmock,
 # with its event stream and the quas plugged into it.
 on quan insert src/config/quan-sources/index.ts "// qu:quan-sources" {

@@ -1,0 +1,12 @@
+{
+  "name": "shop",
+  "private": true,
+  "description": "A full-stack Quanarch application in Node.js: a quanar server, a qua, three quans and a React client.",
+  "scripts": {
+    "setup": "npm i --prefix packages/shop-qua && npm i --prefix quanar && npm i --prefix quans/users && npm i --prefix quans/products && npm i --prefix quans/orders && npm i --prefix web",
+    "build": "npm run build --prefix packages/shop-qua && npm run build --prefix quans/users && npm run build --prefix quans/products && npm run build --prefix quans/orders && node scripts/register.mjs && npm run build --prefix quanar",
+    "start": "npm run build && node scripts/start.mjs",
+    "register": "node scripts/register.mjs",
+    "typecheck": "npm run typecheck --prefix quanar && npm run typecheck --prefix quans/users && npm run typecheck --prefix quans/products && npm run typecheck --prefix quans/orders && npm run typecheck --prefix web"
+  }
+}

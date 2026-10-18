@@ -1,0 +1,32 @@
+[
+  {
+    "name": "orders",
+    "version": "1.0.0",
+    "url": "http://localhost:4100/quans/orders/1.0.0/orders.js",
+    "hash": "efad3e37a8d8742ae6ba0fafed31ed993dc45b2dfe9f28d126ebc3f0aaa5bf09",
+    "events": "http://localhost:4100/events/orders",
+    "quas": [
+      "shop-qua"
+    ]
+  },
+  {
+    "name": "products",
+    "version": "1.0.0",
+    "url": "http://localhost:4100/quans/products/1.0.0/products.js",
+    "hash": "bd855454aa85a4a445541b04ed5853dff66a21cdaf5b0d7d26cf20a4642addd0",
+    "events": "http://localhost:4100/events/products",
+    "quas": [
+      "shop-qua"
+    ]
+  },
+  {
+    "name": "users",
+    "version": "1.0.0",
+    "url": "http://localhost:4100/quans/users/1.0.0/users.js",
+    "hash": "11a6c7bf1b5ae822d8d924f27b671e9857ebbc5742750bd91e69b7217d1eed62",
+    "events": "http://localhost:4100/events/users",
+    "quas": [
+      "shop-qua"
+    ]
+  }
+]
