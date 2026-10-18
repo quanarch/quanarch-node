@@ -11,7 +11,7 @@ export const QUAN_SOURCES: QuanSource[] = [
     name: '[[ .Name ]]',
     url: 'http://localhost:[[ .Port ]]/[[ .Name ]].js',
     events: 'http://localhost:[[ .Port ]]/events',
-    quas: [[ "[" ]][[ range $i, $q := $.Quas ]][[ if $i ]], [[ end ]]'[[ $q.Name ]]'[[ end ]]],
+    quas: [[ "[" ]][[ range $i, $q := .Quas ]][[ if $i ]], [[ end ]]'[[ $q.Name ]]'[[ end ]]],
   },
 [[- end ]]
   // qu:quan-sources
