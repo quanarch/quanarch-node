@@ -1,0 +1,18 @@
+{
+  "name": "[[ .Name ]]",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A quan: business logic only. It cannot run by itself; a quanar loads it and listens for it.",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch --port [[ .Port ]]",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+[[- range .Quas ]]
+    "[[ .Name ]]": "[[ .Dependency ]]",
+[[- end ]]
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}

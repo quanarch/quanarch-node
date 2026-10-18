@@ -1,0 +1,13 @@
+const port = Number(process.env.PORT ?? [[ if eq .Kind "qmock" ]]3001[[ else ]]3000[[ end ]]);
+
+export const appConfig = {
+  port,
+  /** After a quan's event stream closes, how long to wait before knocking again. Nothing is downloaded meanwhile. */
+  reconnectMs: Number(process.env.RECONNECT_MS ?? 2000),
+  fetchTimeoutMs: 3000,
+  loadTimeoutMs: 5000,
+  /** A quan that does not answer a request in time is stopped. */
+  requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT_MS ?? 10000),
+  /** Memory limit of each quan's process. */
+  quanMemoryMb: 128,
+};

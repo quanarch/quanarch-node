@@ -1,0 +1,34 @@
+import { dbManager } from '../db-manager';
+
+type Capability = (...args: any[]) => unknown;
+
+/**
+[[- if eq .Kind "qmock" ]]
+ * Stand-in implementations of the quas, for developing quans: the database is kept in memory.
+[[- else ]]
+ * The quanar's side of each qua: the real work behind every call a quan makes.
+[[- end ]]
+ * A quan's process asks for a capability by name ("<qua>:db.create"); only the quas plugged
+ * into that quan can be reached. Listening (api.get, api.post…) is set up when the quan loads.
+ */
+const db: Record<string, Capability> = {
+  'db.create': (table: string, data: Record<string, unknown>) => dbManager.create(table, data),
+  'db.list': (table: string) => dbManager.list(table),
+  'db.get': (table: string, id: string) => dbManager.get(table, id),
+  'db.update': (table: string, id: string, data: Record<string, unknown>) => dbManager.update(table, id, data),
+  'db.remove': (table: string, id: string) => dbManager.remove(table, id),
+};
+
+/** Lines marked "qu:" are where `qu` adds a qua when a new quan brings one. */
+const QUA_CORES: Record<string, Record<string, Capability>> = {
+[[- range .Quas ]]
+  '[[ .Name ]]': db,
+[[- end ]]
+  // qu:qua-cores
+};
+
+export function pluggedCapabilities(quas: string[]): Record<string, Capability> {
+  const plugged: Record<string, Capability> = {};
+  for (const qua of quas) for (const [name, fn] of Object.entries(QUA_CORES[qua] ?? {})) plugged[`${qua}:${name}`] = fn;
+  return plugged;
+}

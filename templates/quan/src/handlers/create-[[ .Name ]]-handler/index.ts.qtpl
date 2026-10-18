@@ -1,0 +1,15 @@
+[[ if .Quas -]]
+import type { Handler } from '[[ (index .Quas 0).Name ]]';
+import { [[ camel .Name ]]Service } from '../../services';
+import type { NewItem } from '../../types';
+
+export const create[[ pascal .Name ]]Handler: Handler = async (req) => {
+  // The quan's own rule: only an object can be stored.
+  if (typeof req.body !== 'object' || req.body === null || Array.isArray(req.body)) {
+    return { status: 400, body: { error: 'the body must be a JSON object' } };
+  }
+  return { status: 201, body: await [[ camel .Name ]]Service.create(req.body as NewItem) };
+};
+[[- else -]]
+export {};
+[[- end ]]

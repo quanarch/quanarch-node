@@ -1,0 +1,43 @@
+stack node-ts
+version 0.1.0
+title "Node.js · TypeScript"
+
+template project templates/project
+template qua templates/qua {
+	run npm install
+	run npm run build
+}
+template quanar templates/quanar {
+	run npm install
+	run npm run build
+	port 3000
+	start npm run dev
+}
+template quan templates/quan {
+	run npm install
+	port 4001
+	start npm run watch
+}
+template qmock templates/quanar {
+	run npm install
+	run npm run build
+	port 3001
+	start npm run dev
+}
+
+# A quan added to the project later is listed in every quanar and qmock,
+# with its event stream and the quas plugged into it.
+on quan insert src/config/quan-sources/index.ts "// qu:quan-sources" {
+	line "{"
+	line "  name: '[[ .Name ]]',"
+	line "  url: 'http://localhost:[[ .Port ]]/[[ .Name ]].js',"
+	line "  events: 'http://localhost:[[ .Port ]]/events',"
+	line "  quas: [[ \"[\" ]][[ range $i, $q := .Quas ]][[ if $i ]], [[ end ]]'[[ $q.Name ]]'[[ end ]]],"
+	line "},"
+}
+
+# A qua a quanar or qmock does not have yet is imported by the quan host and given a core.
+on qua insert src/quan-host/index.ts "// qu:qua-imports" "import * as [[ pascal .Name ]] from '[[ .Name ]]';"
+on qua insert src/quan-host/index.ts "// qu:qua-host" "'[[ .Name ]]': { module: [[ pascal .Name ]], plug: () => [[ pascal .Name ]].init(coreFor('[[ .Name ]]')) },"
+on qua insert src/core/qua-core/index.ts "// qu:qua-cores" "'[[ .Name ]]': db,"
+on qua run npm install [[ .Dependency ]]

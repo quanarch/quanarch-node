@@ -1,0 +1,12 @@
+[[ if .Quas -]]
+import { api } from '[[ (index .Quas 0).Name ]]';
+import { ROUTES } from './constants';
+import { create[[ pascal .Name ]]Handler, list[[ pascal .Name ]]Handler } from './handlers';
+
+// The quan serves nothing itself: it asks the quanar to listen for it.
+api.get(ROUTES.HOME, list[[ pascal .Name ]]Handler);
+api.post(ROUTES.HOME, create[[ pascal .Name ]]Handler);
+[[- else -]]
+// No qua yet: a quan reaches the quanar only through a qua. See README.md.
+export {};
+[[- end ]]

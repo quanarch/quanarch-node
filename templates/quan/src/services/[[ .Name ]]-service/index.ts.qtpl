@@ -1,0 +1,13 @@
+[[ if .Quas -]]
+import { db } from '[[ (index .Quas 0).Name ]]';
+import { TABLES } from '../../constants';
+import type { NewItem } from '../../types';
+
+export const [[ camel .Name ]]Service = {
+  list: () => db.list(TABLES.ITEMS),
+
+  create: (item: NewItem) => db.create(TABLES.ITEMS, item),
+};
+[[- else -]]
+export {};
+[[- end ]]

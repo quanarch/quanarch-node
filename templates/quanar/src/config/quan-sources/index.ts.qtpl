@@ -1,0 +1,18 @@
+import type { QuanSource } from '../../types';
+
+/**
+ * The quans this [[ .Kind ]] loads, where each is served from, and the quas plugged into each.
+ * A quan's events stream says when a new build is ready; without it the quan is loaded once.
+ * Lines marked "qu:" are where `qu` adds a quan.
+ */
+export const QUAN_SOURCES: QuanSource[] = [
+[[- range .Quans ]]
+  {
+    name: '[[ .Name ]]',
+    url: 'http://localhost:[[ .Port ]]/[[ .Name ]].js',
+    events: 'http://localhost:[[ .Port ]]/events',
+    quas: [[ "[" ]][[ range $i, $q := $.Quas ]][[ if $i ]], [[ end ]]'[[ $q.Name ]]'[[ end ]]],
+  },
+[[- end ]]
+  // qu:quan-sources
+];
