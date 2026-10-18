@@ -1,0 +1,60 @@
+import { context } from 'esbuild';
+import http from 'node:http';
+import fs from 'node:fs';
+
+const NAME = '[[ .Name ]]';
+// The port comes from the watch script: node build.mjs --watch --port 4001
+const PORT = Number(process.argv[process.argv.indexOf('--port') + 1]) || 4001;
+const FILE = `dist/${NAME}.js`;
+
+// Everyone listening on /events (the quanar) hears about each new build at once.
+const listeners = new Set();
+const announce = {
+  name: 'announce',
+  setup(build) {
+    build.onEnd((result) => {
+      if (result.errors.length) return;
+      for (const res of listeners) res.write('event: change\ndata: {}\n\n');
+    });
+  },
+};
+
+// One CommonJS file. The quas stay outside: at runtime the quanar hands the quan its own copies.
+const ctx = await context({
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  platform: 'neutral',
+  format: 'cjs',
+  target: 'es2023',
+  external: [[ "[" ]][[ range $i, $q := .Quas ]][[ if $i ]], [[ end ]]'[[ $q.Name ]]'[[ end ]]],
+  outfile: FILE,
+  logLevel: 'info',
+  plugins: [announce],
+});
+
+if (!process.argv.includes('--watch')) {
+  await ctx.rebuild();
+  await ctx.dispose();
+} else {
+  await ctx.watch();
+
+  // Serves the built file, and an event stream that says "a new build is ready".
+  http
+    .createServer((req, res) => {
+      if (req.url === '/events') {
+        res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
+        // Sent at once, so the quanar knows the quan is here without waiting for the first build.
+        res.write(': connected\n\n');
+        listeners.add(res);
+        req.on('close', () => listeners.delete(res));
+        return;
+      }
+      if (req.url === `/${NAME}.js` && fs.existsSync(FILE)) {
+        res.writeHead(200, { 'Content-Type': 'text/javascript', 'Cache-Control': 'no-store' });
+        fs.createReadStream(FILE).pipe(res);
+        return;
+      }
+      res.writeHead(404).end();
+    })
+    .listen(PORT, () => console.log(`${NAME} served at http://localhost:${PORT}/${NAME}.js, new builds announced at /events`));
+}

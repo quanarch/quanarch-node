@@ -1,0 +1,4 @@
+/** Every path starts with the quan's name. */
+export const ROUTES = {
+  HOME: '/[[ .Name ]]',
+} as const;

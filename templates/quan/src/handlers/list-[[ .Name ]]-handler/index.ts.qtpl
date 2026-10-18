@@ -1,0 +1,8 @@
+[[ if .Quas -]]
+import type { Handler } from '[[ (index .Quas 0).Name ]]';
+import { [[ camel .Name ]]Service } from '../../services';
+
+export const list[[ pascal .Name ]]Handler: Handler = async () => ({ body: await [[ camel .Name ]]Service.list() });
+[[- else -]]
+export {};
+[[- end ]]

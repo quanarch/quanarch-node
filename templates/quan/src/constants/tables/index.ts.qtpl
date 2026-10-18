@@ -1,0 +1,4 @@
+/** The quan names its tables; the quanar does not know them in advance. */
+export const TABLES = {
+  ITEMS: '[[ .Name ]]',
+} as const;

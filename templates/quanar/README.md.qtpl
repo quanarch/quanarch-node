@@ -1,0 +1,42 @@
+# [[ .Name ]]
+
+[[ if eq .Kind "qmock" -]]
+A qmock: a stand-in quanar for developing quans. It is the quanar template itself; its
+database is kept in memory, so a quan can be tried without the real quanar or a real database.
+[[- else -]]
+A quanar: one server process. It holds no business logic. It loads quans at runtime,
+listens to what they ask it to listen to and does the work they ask for through the qua.
+[[- end ]]
+[[ if not .Quas ]]
+> **No qua yet.** Add a qua to `package.json`, import it in `src/quan-host`, give it a core
+> there and in `src/core/qua-core`, and list it in a quan's `quas` in `src/config/quan-sources`.
+[[ end ]]
+## How a quan arrives
+
+1. `src/config/quan-sources` lists each quan: where its file is, its event stream and the quas plugged into it.
+2. The quanar subscribes to the event stream. When it opens, the file is downloaded and, if the list
+   gives a `hash`, checked; a file that does not match never runs.
+3. The quan runs in its own Node process (`src/quan-host`), with the permission model on, an empty
+   environment and a memory limit. It only gets the quas plugged into it.
+4. `api.get('/notes', …)` in the quan makes the quanar listen to `GET /notes`; requests are handed to the
+   quan's process. `db.create('notes', …)` comes back to the quanar's `db-manager`.
+5. A `change` event reloads the quan; when the stream closes the quan is unmounted at once.
+
+## Layout
+
+- `src/core`: `api-manager` (who listens to what), `db-manager` (in memory; replace it to use a real
+  database), `http-server`, `quan-loader`, `quan-process`, `event-stream`, `qua-core`, `logger`
+- `src/quan-host`: the program each quan's process runs; quanar code, built to `dist/quan-host.cjs`
+- `src/services`: `quan-service` (follows the quans), `system-service` (`GET /health`, `GET /quans`)
+
+Lines marked `// qu:` are where `qu` adds quans and quas. Do not delete them; you may move them.
+
+```sh
+npm run dev      # builds and starts on port [[ if eq .Kind "qmock" ]]3001[[ else ]]3000[[ end ]]
+```
+
+| Variable | Default | |
+|---|---|---|
+| `PORT` | [[ if eq .Kind "qmock" ]]3001[[ else ]]3000[[ end ]] | |
+| `RECONNECT_MS` | 2000 | wait before knocking on a closed quan again |
+| `REQUEST_TIMEOUT_MS` | 10000 | a quan that does not answer in time is stopped |

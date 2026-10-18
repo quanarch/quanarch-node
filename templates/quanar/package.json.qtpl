@@ -1,0 +1,22 @@
+{
+  "name": "[[ .Name ]]",
+  "version": "0.1.0",
+  "private": true,
+  "description": "[[ if eq .Kind "qmock" ]]A stand-in quanar for developing quans.[[ else ]]The quanar: one server process that loads quans at runtime, runs each in its own process and does their work through the qua.[[ end ]]",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && esbuild src/index.ts --bundle --platform=node --format=cjs --target=node24 --packages=external --outfile=dist/index.cjs && esbuild src/quan-host/index.ts --bundle --platform=node --format=cjs --target=node24 --outfile=dist/quan-host.cjs",
+    "start": "node dist/index.cjs",
+    "dev": "npm run build && npm start",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+[[- range $i, $q := .Quas ]][[ if $i ]],[[ end ]]
+    "[[ $q.Name ]]": "[[ $q.Dependency ]]"
+[[- end ]]
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}
