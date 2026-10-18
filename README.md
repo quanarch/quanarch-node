@@ -3,8 +3,12 @@
 The Node.js · TypeScript stack of [Quanarch](https://quanarch.org): the templates
 `qu` uses for `--lang node-ts`.
 
-> Not released yet. Until its first version, try it from a clone:
-> `QU_STACK_DIR=path/to/quanarch-node qu new project …` with qu 0.3.1 or later.
+```sh
+qu new project shop --lang node-ts --dir . --qua shop-qua --quanar shop-quanar --quan notes
+qu new examples shop --lang node-ts --example advanced --dir .
+```
+
+Needs qu 0.3.3 or later and Node.js 24 or later.
 
 ## How Quanarch works in Node.js
 
@@ -33,6 +37,13 @@ build and unmounts it the moment it closes.
 
 How a quan or a qua added later is taken in by the quanar is declared in
 `stack.qu`, under `on quan` and `on qua`.
+
+## Examples
+
+`examples/advanced` is a full-stack shop: a quanar server, a qua, three quans and a
+React client. Its quans declare models, permissions, apis with middlewares and
+validation, and the events they listen to; the quanar's managers turn them into
+tables, routes and checks. Orders and stock talk only by events. See its README.
 
 ## License
 
